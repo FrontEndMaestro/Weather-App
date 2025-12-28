@@ -34,6 +34,7 @@ async function apiRequest(location) {
   );
 
   processedData["location"] = fetchgeo;
+  console.log("hello", processedData.icon);
   if (
     processedData.icon.includes("cloudy") ||
     processedData.icon.includes("fog") ||
@@ -53,8 +54,7 @@ async function apiRequest(location) {
     let gifjson = await gif.json();
 
     var url = gifjson.data.images.original.url;
-  } else if (processedData.icon.includes("Snow")) {
-    console.log("hello");
+  } else if (processedData.icon.includes("snow")) {
     let gif = await fetch(snowUrl);
 
     let gifjson = await gif.json();

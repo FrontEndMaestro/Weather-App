@@ -42,10 +42,8 @@ function showInvalidLocation() {
 }
 
 function populateUi(data) {
-  console.log(data);
   let body = document.querySelector("body");
   let weatherData = data.processedData;
-  console.log(weatherData);
   document.querySelector(".condition").textContent =
     weatherData.currentcondition;
   document.querySelector(".temp").textContent = weatherData.temperature;
