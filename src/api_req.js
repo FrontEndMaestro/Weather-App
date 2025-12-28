@@ -1,27 +1,62 @@
-const apikey = "";
 
-let giphyKey = "LTTyZ3GxkMw35SE1aUTNHGFTXaTaPmNG";
-let rainUrl = "https://giphy.com/gifs/rain-vegeta-in-the-pNn4hlkovWAHfpLRRD";
-let lighteningUrl = "https://giphy.com/gifs/black-storm-cloud-13ZEwDgIZtK1y";
-let cloudyUrl = "https://giphy.com/gifs/nube-suave-algodon-gs2ubveMcc2zPVNceK";
-let clearSky = "https://giphy.com/gifs/cat-kitten-kitty-VxbvpfaTTo3le";
-let clearNight = "https://giphy.com/gifs/night-aaTz9fnXkzoQ";
+  const giphyKey = "LTTyZ3GxkMw35SE1aUTNHGFTXaTaPmNG";
+
+  let rainUrl = `https://api.giphy.com/v1/gifs/t7Qb8655Z1VfBGr5XB?api_key=${giphyKey}&rating=g`;
+
+  let cloudyUrl = `https://api.giphy.com/v1/gifs/gs2ubveMcc2zPVNceK?api_key=${giphyKey}&rating=g`;
+
+  let clearSky = `https://api.giphy.com/v1/gifs/VxbvpfaTTo3le?api_key=${giphyKey}&rating=g`;
+
+
+function throwCustomLocationError() {
+  throw {
+    name: "Invalid Location",
+    message: "Please enter correct location",
+  };
+}
+
 async function apiRequest(location) {
-  console.log(location);
-  //implement try fetch logic here
-  const response = await fetch(
+  
+  let response;
+  response = await fetch(
     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=uk&key=9BR5THTRMDJSGB8PPUHUCR2PH&contentType=json`,
     { cache: "reload" },
   );
+  if (!response.ok) {
+    if (response.status == 400) {
+      throwCustomLocationError();
+    } else throw new Error(response.status);
+  }
+
   const jsonData = await response.json();
-  console.log(jsonData);
   let processedData = processData(jsonData);
-  let fetchgeo = fetchGeocodingLocation(jsonData.latitude, jsonData.longitude);
-  fetchgeo.then((data) => {
-    processedData["location"] = data;
-  });
-  console.log(processedData);
-  return processedData;
+  let fetchgeo = await fetchGeocodingLocation(
+    jsonData.latitude,
+    jsonData.longitude,
+  );
+
+  processedData["location"] = fetchgeo;
+  if (
+    processedData.icon.includes("cloudy") ||
+    processedData.icon.includes("fog")
+  ) {
+    let gif = await fetch(cloudyUrl);
+    let gifjson = await gif.json();
+
+    var url = gifjson.data.images.original.url;
+  } else if (processedData.icon.includes("clear")) {
+    let gif = await fetch(clearSky);
+    let gifjson = await gif.json();
+
+    var url = gifjson.data.images.original.url;
+  } else if (processedData.icon.includes("rain")) {
+    let gif = await fetch(rainUrl);
+    let gifjson = await gif.json();
+
+    var url = gifjson.data.images.original.url;
+  }
+
+  return { processedData, url };
 }
 
 function processData(data) {
@@ -60,9 +95,7 @@ function processData(data) {
 function processForecast(forecast) {
   let processed = forecast.map((element) => {
     let processedElement = {};
-    processedElement["date"] = new Date(
-      element.datetimeEpoch * 1000,
-    ).toLocaleDateString("en-GB");
+    processedElement["date"] = new Date(element.datetimeEpoch * 1000);
     processedElement["condition"] = element.conditions;
     processedElement["temp"] = element.temp;
     processedElement["icon"] = element.icon;
@@ -84,7 +117,6 @@ function hourlyforecast(hourlyData, time) {
     };
     hourlyforecast.push(object);
   });
-  //sconsole.log(hourlyforecast);
   return hourlyforecast;
 }
 
@@ -104,6 +136,9 @@ async function fetchGeocodingLocation(latitude, longitude) {
   const jsondata = await geocodingResponse.json();
   let country = jsondata.address.country;
   let city = jsondata.address.city;
+  if (city == undefined) {
+    throwCustomLocationError();
+  }
   return { country, city };
 }
 

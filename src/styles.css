@@ -22,6 +22,15 @@
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  background-size: cover;
+  font-family: "nunito";
+}
+
+.nunito-normal {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }
 
 img,
@@ -70,6 +79,7 @@ h6 {
 body {
   display: flex;
   height: 100vh;
+  min-width: 100vw;
   justify-content: center;
 }
 
@@ -77,30 +87,159 @@ form {
   margin-top: 2rem;
   display: flex;
   align-self: flex-start;
-  flex-direction: row;
-  border: 1px solid black;
+  flex-direction: column;
+  border-radius: 0.5rem;
 }
 
 form > input {
   outline: none;
   border: none;
-  padding: 5px;
+  padding: 7px;
+  background-color: rgb(214, 212, 212);
+  border-radius: 0.5rem;
+  padding-left: 15px;
 }
 
-form > button {
-  padding: 0px 12px;
-  outline: none;
-  border: none;
-  background-color: white;
+.error {
+  background-color: rgba(194, 198, 199, 0.48);
+  text-align: center;
+  color: #d14848;
+  border-radius: 0.5rem;
+  margin-top: 0.3rem;
 }
 
-button:hover {
+input:hover {
   cursor: grab;
   background-color: #e3e5e8;
+  border-radius: 0.5rem;
 }
 
 .current-day {
   position: absolute;
+  top: 45%;
+  left: 16%;
+  line-height: 1;
+  width: 40%;
+}
+
+.current-day .condition {
+  padding-bottom: 2px;
+  padding-left: 12px;
+}
+
+.current-day .description {
+}
+
+.wrapper {
+  width: 45%;
+  position: absolute;
   top: 40%;
-  left: 10%;
+  left: 30%;
+  border-left: 3px solid black;
+  padding: 10px 10px;
+  margin-left: 20px;
+}
+
+.wrapper .feels-like {
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.current-day .location {
+  font-size: 1.5rem;
+  padding-left: 10px;
+}
+
+.temp-div {
+  display: flex;
+  padding-top: 5px;
+  margin-left: 10px;
+  min-width: 20%;
+}
+
+.current-day .unit {
+  padding-left: 2px;
+  font-size: 2rem;
+}
+
+.current-day .temp {
+  font-size: 4rem;
+}
+
+.forecast {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 30%;
+  left: 60%;
+  gap: 2rem;
+  width: 22%;
+}
+
+.child {
+  display: flex;
+  gap: 5%;
+  min-width: 30vw;
+  background-color: rgba(216, 221, 223, 0.48);
+  padding: 10px 40px;
+  transform: skewX(-30deg);
+  align-items: center;
+  border: 1px solid rgb(50, 50, 50);
+}
+
+.child > * {
+  transform: skewX(30deg);
+}
+
+.dateDiv {
+  margin: auto 0px;
+  font-size: 1.3vw;
+  font-weight: 550;
+  width: 45%;
+}
+
+.child > .forecast-temp {
+  min-width: 25%;
+  margin-left: 20%;
+  font-size: 1.2vw;
+}
+
+.icon {
+  width: 35px;
+  height: 35px;
+}
+
+.loader {
+  border: 8px solid #ced1d3; /* Blue */
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: 0.5s ease-in-out 0s infinite reverse loading;
+  opacity: 1;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader-overlay {
+  opacity: 0.5;
+  position: fixed;
+  z-index: 99;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hide {
+  display: none;
 }

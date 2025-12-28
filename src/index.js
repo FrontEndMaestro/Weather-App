@@ -1,8 +1,7 @@
 import "./styles.css";
-import { apiRequest } from "./api_req";
-import { setEventListeners } from "./UIController";
+import { setEventListeners, callApiRequest } from "./UIController";
+document.querySelector(".loader-overlay").classList.remove("hide");
 const apikey =
   "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/islamabad?unitGroup=uk&key=9BR5THTRMDJSGB8PPUHUCR2PH&contentType=json";
-
-//apiRequest("islamabad");
 setEventListeners();
+callApiRequest("islamabad");
