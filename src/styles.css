@@ -81,6 +81,7 @@ body {
   height: 100vh;
   min-width: 100vw;
   justify-content: center;
+  background-size: cover;
 }
 
 form {
