@@ -6,7 +6,7 @@ let cloudyUrl = `https://api.giphy.com/v1/gifs/gs2ubveMcc2zPVNceK?api_key=${giph
 
 let clearSky = `https://api.giphy.com/v1/gifs/VxbvpfaTTo3le?api_key=${giphyKey}&rating=g`;
 
-let snowUrl = `https://api.giphy.com/v1/gifs/rmuwjm1FLjxoQ?api_key=${giphyKey}&rating=g`;
+let snowUrl = `https://api.giphy.com/v1/gifs/dAyD6PWoQRs40?api_key=${giphyKey}&rating=g`;
 function throwCustomLocationError() {
   throw {
     name: "Invalid Location",
