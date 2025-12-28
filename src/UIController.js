@@ -9,9 +9,8 @@ function setEventListeners() {
       document.querySelector(".error").textContent = "";
     }
   });
-
   document.querySelector("#wrapper").classList.remove("wrapper");
-  input.addEventListener("submit", (event) => {
+  document.querySelector("form").addEventListener("submit", (event) => {
     //display loading screen
     document.querySelector(".loader-overlay").classList.remove("hide");
     event.preventDefault();
@@ -21,17 +20,19 @@ function setEventListeners() {
 
 function callApiRequest(value) {
   const fetchedData = apiRequest(value);
-  fetchedData.then((data) => {
-    //hide loading screen & display content
-    document.querySelector(".loader-overlay").classList.add("hide");
-    populateUi(fetchedData);
-  }).catch(function (error) {
-    document.querySelector(".loader-overlay").classList.add("hide");
-    if (error.name == "Invalid Location") {
-      showInvalidLocation();
-    }
-    console.log("error fetching weather data", error);
-  });
+  fetchedData
+    .then((data) => {
+      //hide loading screen & display content
+      document.querySelector(".loader-overlay").classList.add("hide");
+      populateUi(data);
+    })
+    .catch(function (error) {
+      document.querySelector(".loader-overlay").classList.add("hide");
+      if (error.name == "Invalid Location") {
+        showInvalidLocation();
+      }
+      console.log("error fetching weather data", error);
+    });
 }
 
 function showInvalidLocation() {
@@ -41,8 +42,10 @@ function showInvalidLocation() {
 }
 
 function populateUi(data) {
+  console.log(data);
   let body = document.querySelector("body");
   let weatherData = data.processedData;
+  console.log(weatherData);
   document.querySelector(".condition").textContent =
     weatherData.currentcondition;
   document.querySelector(".temp").textContent = weatherData.temperature;
@@ -76,7 +79,7 @@ function forecastDisplay(data) {
   const forecastContainer = document.querySelector(".forecast");
   forecastContainer.innerHTML = "";
 
-//displays weather prediction of 5 days
+  //displays weather prediction of 5 days
   data.forEach((element) => {
     let date = element.date.getDay();
     let day = days[date];

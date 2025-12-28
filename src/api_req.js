@@ -1,12 +1,13 @@
+const giphyKey = "LTTyZ3GxkMw35SE1aUTNHGFTXaTaPmNG";
 
-  const giphyKey = "LTTyZ3GxkMw35SE1aUTNHGFTXaTaPmNG";
+let rainUrl = `https://api.giphy.com/v1/gifs/t7Qb8655Z1VfBGr5XB?api_key=${giphyKey}&rating=g`;
 
-  let rainUrl = `https://api.giphy.com/v1/gifs/t7Qb8655Z1VfBGr5XB?api_key=${giphyKey}&rating=g`;
+let cloudyUrl = `https://api.giphy.com/v1/gifs/gs2ubveMcc2zPVNceK?api_key=${giphyKey}&rating=g`;
 
-  let cloudyUrl = `https://api.giphy.com/v1/gifs/gs2ubveMcc2zPVNceK?api_key=${giphyKey}&rating=g`;
+let clearSky = `https://api.giphy.com/v1/gifs/VxbvpfaTTo3le?api_key=${giphyKey}&rating=g`;
 
-  let clearSky = `https://api.giphy.com/v1/gifs/VxbvpfaTTo3le?api_key=${giphyKey}&rating=g`;
-
+let snowUrl =
+  "https://api.giphy.com/v1/gifs/rmuwjm1FLjxoQ?api_key=LTTyZ3GxkMw35SE1aUTNHGFTXaTaPmNG&rating=g";
 
 function throwCustomLocationError() {
   throw {
@@ -16,7 +17,6 @@ function throwCustomLocationError() {
 }
 
 async function apiRequest(location) {
-  
   let response;
   response = await fetch(
     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=uk&key=9BR5THTRMDJSGB8PPUHUCR2PH&contentType=json`,
@@ -38,7 +38,8 @@ async function apiRequest(location) {
   processedData["location"] = fetchgeo;
   if (
     processedData.icon.includes("cloudy") ||
-    processedData.icon.includes("fog")
+    processedData.icon.includes("fog") ||
+    processedData.icon == "Overcast"
   ) {
     let gif = await fetch(cloudyUrl);
     let gifjson = await gif.json();
@@ -54,6 +55,15 @@ async function apiRequest(location) {
     let gifjson = await gif.json();
 
     var url = gifjson.data.images.original.url;
+  } else if (processedData.icon.includes("Snow")) {
+    try {
+      let gif = await fetch(snowUrl);
+      let gifjson = await gif.json();
+
+      var url = gifjson.data.images.original.url;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return { processedData, url };
