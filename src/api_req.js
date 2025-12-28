@@ -6,9 +6,7 @@ let cloudyUrl = `https://api.giphy.com/v1/gifs/gs2ubveMcc2zPVNceK?api_key=${giph
 
 let clearSky = `https://api.giphy.com/v1/gifs/VxbvpfaTTo3le?api_key=${giphyKey}&rating=g`;
 
-let snowUrl =
-  "https://api.giphy.com/v1/gifs/rmuwjm1FLjxoQ?api_key=LTTyZ3GxkMw35SE1aUTNHGFTXaTaPmNG&rating=g";
-
+let snowUrl = `https://api.giphy.com/v1/gifs/rmuwjm1FLjxoQ?api_key=${giphyKey}&rating=g`;
 function throwCustomLocationError() {
   throw {
     name: "Invalid Location",
@@ -56,14 +54,12 @@ async function apiRequest(location) {
 
     var url = gifjson.data.images.original.url;
   } else if (processedData.icon.includes("Snow")) {
-    try {
-      let gif = await fetch(snowUrl);
-      let gifjson = await gif.json();
+    console.log("hello");
+    let gif = await fetch(snowUrl);
 
-      var url = gifjson.data.images.original.url;
-    } catch (error) {
-      console.log(error);
-    }
+    let gifjson = await gif.json();
+
+    var url = gifjson.data.images.original.url;
   }
 
   return { processedData, url };
